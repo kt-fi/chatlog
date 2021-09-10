@@ -61,8 +61,8 @@ function addNewMessage(msg, user){
   let child = document.getElementById("answers-box")
   if(child){
       container.removeChild(child)
-
   }
+
         }
         
 
@@ -125,6 +125,10 @@ function sendMessageToServerButton(message){
     socket.on("serverConnected", (msg)=>{
         addNewMessage(msg, "server")
         console.log(msg);
+    })
+
+    socket.on("signoff", (msg)=>{
+      addNewMessage(msg, "server")
     })
 
 function unBlockSend(){

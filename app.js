@@ -6,7 +6,9 @@ let mongoose = require("mongoose");
 let cors = require("cors");
 global.io = require('socket.io')(http);
 
-let askQuestion = require("./serverResponse")
+let chatRouter = require("./routers/chatRouter");
+
+let serverResponse = require("./serverResponse")
 let ChatMessage = require("./models/chatModel.js")
 
 //Middlewares
@@ -29,13 +31,21 @@ app.get("/", (req, res)=>{
     res.sendFile(__dirname + "/views/index.html")
 })
 
+app.use("/chat", chatRouter)
 
+
+let responses = []
 
 // CONNECT to socket.io
 io.on("connection", (socket)=>{
-    console.log("Connected Client")
     let d = new Date()
-    let n = 0;
+    let message = {
+        uname: "Server",
+        dateTime: `${d.getDate()}/${d.getMonth() + 1}/${d.getFullYear()} @ ${d.toLocaleTimeString()}`,
+        message: {question:"Hi welcome to our website!! What is your name?"}
+    }
+    socket.emit("serverConnected", message )
+
     socket.on("msgClient", async (message)=>{
         let newMessage = await new ChatMessage({ 
             uname: "You",
@@ -45,9 +55,9 @@ io.on("connection", (socket)=>{
         await newMessage.save((err, doc)=>{
             if(!err){
                 io.emit("addToChat", doc);
-                console.log(message);
+                serverResponse.responses.push(message)
                 setTimeout(()=>{
-                    askQuestion.askQuestion()
+                    serverResponse.askQuestion()
                 },2000)
             }else{
             console.log({"msg":"This Message could not be sent, please try again!!"})
@@ -64,3 +74,6 @@ io.on("connection", (socket)=>{
 http.listen(9090, ()=>{
     console.log("Listening on Port: 9090");
 })
+
+
+module.exports = responses;
