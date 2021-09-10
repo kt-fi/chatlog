@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"> 
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-KyZXEAg3QhqLMpG8r+8fhAXLRk2vvoC2f3B09zVXn8CA5QIVfZOJ3BCsw2P0p/We" crossorigin="anonymous">
+    <link rel="stylesheet" href="styles.css">
+    <script src="/socket.io/socket.io.js"></script>
+
+    <script>
+        const socket = io();
+
+
+        
+
+    </script>
+
+    <title>Chat Portal</title>
+</head>
+<body>
+    <div class="center-text">
+        <h2 class="header m-5">CHAT ROOM</h2>
+      <div id="chat-history" class="chat-box">
+        <ul></ul>
+      </div>
+
+    <textarea name="" id="message" class="message" cols="65" rows="3" placeholder="Type msg here"></textarea><br>
+  
+    <div class="mb-3">
+      <button class="btn btn-success btn-send" onclick="sendMsg()">Send!</button>
+    </div>
+     
+   <a href="/chat/downloadChatHistory"><button class="btn btn-secondary" id="chat-download-btn">Download Chat!</button>  </a> 
+    </div>
+
+
+</body>
+</html>
