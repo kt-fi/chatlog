@@ -11,12 +11,55 @@
     <script>
         const socket = io();
 
+// FUNCTION FOR  CREATING AND FORMATTING NEW MESSAGE FOR CHAT
+function addNewMessage(msg, user){
+  let chatHistory = document.getElementById("chat-history")
+        
+        let newChatDivContainer = document.createElement('div');
+        let newMessageDiv = document.createElement("div")
+        let newChatMessageUname = document.createElement('h5');
+        let newChatMessageDate = document.createElement('p');
+        let newChatMessageMessage = document.createElement('p');
+
+        let newMessageUname = document.createTextNode(msg.uname);
+        let newMessageDate = document.createTextNode(msg.dateTime);
+        // let newMessageMessage = document.createTextNode(msg.message);
+        let newMessageMessage;
+        user == "client" ? newMessageMessage = document.createTextNode(msg.message) : newMessageMessage = document.createTextNode(msg.message.question);
+        newChatDivContainer.setAttribute('class', `${user == "client" ? 'chat-message-user mt-2' :'chat-message-server mt-2'}`);
+        newChatMessageUname.setAttribute('class', 'chat-message__uname');
+        newChatMessageDate.setAttribute('class', 'chat-message__date');
+        newChatMessageMessage.setAttribute('class', 'chat-message__message');
+        
+        newChatDivContainer.appendChild(newMessageDiv);
+        newChatMessageUname.appendChild(newMessageUname);
+        newChatMessageDate.appendChild(newMessageDate);
+        newChatMessageMessage.appendChild(newMessageMessage);
+
+        newMessageDiv.appendChild(newChatMessageUname);
+        newMessageDiv.appendChild(newMessageDate);
+        newMessageDiv.appendChild(newChatMessageMessage);
+
+        chatHistory.appendChild(newChatDivContainer); 
+        
+        document.getElementById("chat-history").scrollTo(0, 100000000);
+}
+
     function sendMessageToServer(){
         let message = document.getElementById("message").value;
         socket.emit("msgClient", message)
+      
     }
 
-    socket.on("msgServer")
+    socket.on("addToChat", (msg)=>{
+      addNewMessage(msg, "client")
+      })    
+
+    socket.on("serverResponse", (msg)=>{
+        addNewMessage(msg, "server")
+        console.log(msg);
+    })
+
 
     </script>
 
