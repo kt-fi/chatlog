@@ -13,24 +13,31 @@
 
 // FUNCTION FOR  CREATING AND FORMATTING NEW MESSAGE FOR CHAT
 function addNewMessage(msg, user){
-  let chatHistory = document.getElementById("chat-history")
         
+      let chatHistory = document.getElementById("chat-history")
         let newChatDivContainer = document.createElement('div');
         let newMessageDiv = document.createElement("div")
         let newChatMessageUname = document.createElement('h5');
         let newChatMessageDate = document.createElement('p');
         let newChatMessageMessage = document.createElement('p');
 
+
+
         let newMessageUname = document.createTextNode(msg.uname);
         let newMessageDate = document.createTextNode(msg.dateTime);
         // let newMessageMessage = document.createTextNode(msg.message);
         let newMessageMessage;
         user == "client" ? newMessageMessage = document.createTextNode(msg.message) : newMessageMessage = document.createTextNode(msg.message.question);
+        
+        
+  
         newChatDivContainer.setAttribute('class', `${user == "client" ? 'chat-message-user mt-2' :'chat-message-server mt-2'}`);
         newChatMessageUname.setAttribute('class', 'chat-message__uname');
         newChatMessageDate.setAttribute('class', 'chat-message__date');
         newChatMessageMessage.setAttribute('class', 'chat-message__message');
         
+        
+
         newChatDivContainer.appendChild(newMessageDiv);
         newChatMessageUname.appendChild(newMessageUname);
         newChatMessageDate.appendChild(newMessageDate);
@@ -39,16 +46,61 @@ function addNewMessage(msg, user){
         newMessageDiv.appendChild(newChatMessageUname);
         newMessageDiv.appendChild(newMessageDate);
         newMessageDiv.appendChild(newChatMessageMessage);
+        
+
+        
+        
+        if(msg.message.answers){
+          addAnswers(msg.message.answers)
+          document.getElementById("message").hidden = true
+          document.getElementById("btn-send").hidden = true
+        }
+        
 
         chatHistory.appendChild(newChatDivContainer); 
-        
         document.getElementById("chat-history").scrollTo(0, 100000000);
 }
 
-    function sendMessageToServer(){
+async function addAnswers(answers){
+  console.log(answers);
+  let container = document.getElementById("answers-list")
+  let child = document.getElementById("answers-box")
+  if(child){
+      container.removeChild(child)
+
+  }
+  let answersDiv = document.createElement("div")
+  answersDiv.setAttribute("id", "answers-box")
+
+  await answers.forEach(answer => {
+  let chatAnswers = document.getElementById("answers-list");
+    
+
+  let newAnswerButton = document.createElement("button")
+  let answerText = document.createTextNode(answer)
+  
+  newAnswerButton.setAttribute("class", "btn btn-secondary m-2")
+  newAnswerButton.setAttribute("value", answer)
+  newAnswerButton.setAttribute("onclick", "sendMessageToServerButton(value)")
+  newAnswerButton.appendChild(answerText)
+  answersDiv.appendChild(newAnswerButton)
+  chatAnswers.appendChild(answersDiv)
+ 
+  });
+  
+}
+
+function sendMessageToServerButton(message){
+        
+        socket.emit("msgClient", message)
+        
+    }
+
+
+  function sendMessageToServer(){
         let message = document.getElementById("message").value;
         socket.emit("msgClient", message)
-      
+        
     }
 
     socket.on("addToChat", (msg)=>{
@@ -71,11 +123,11 @@ function addNewMessage(msg, user){
       <div id="chat-history" class="chat-box">
         <ul></ul>
       </div>
-
+    <div id="answers-list"></div>
     <textarea name="" id="message" class="message" cols="65" rows="3" placeholder="Type msg here"></textarea><br>
-  
+      
     <div class="mb-3">
-      <button class="btn btn-success btn-send" onclick="sendMessageToServer()">Send!</button>
+      <button class="btn btn-success btn-send" id="btn-send" onclick="sendMessageToServer()">Send!</button>
     </div>
      
    <a href="/chat/downloadChatHistory"><button class="btn btn-secondary" id="chat-download-btn">Download Chat!</button>  </a> 

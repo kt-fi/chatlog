@@ -1,23 +1,21 @@
+let ChatMessage = require("./models/chatModel")
 
 let questions = [
     {q: 1,
     question: "What is your email?"},
     {q: 2,
     question: "What would you like to talk about?",
-    a1: "Our Products?",
-    a2: "Our Services?",
-    a3:  "Work With Us?"},
+     answers: ["Our Products","Our Services","Work With Us"]},
     {q: 3,
     question: "When should we contact you?",
-    a1: "Monday?",
-    a2: "Tuesday?",
-    a3:  "Wednesday?",
-    a4:  "Thursday?",
-    a5:  "Friday?"},
+    answers: ["Monday","Tuesday","Wednesday","Thursday", "Friday"]},
+    {q: 4,
+        question: "Thankyou we will be in touch shortly!!"
+        }
 ]
 let i = 0;
-let askQuestion = () => {
-   
+let askQuestion = async () => {
+  
     let d = new Date();
     let message = {
         uname: "Server",
@@ -25,8 +23,20 @@ let askQuestion = () => {
         message: questions[i]
     }
 
+   let newMessage = await new ChatMessage({
+        uname: "Server",
+        dateTime: `${d.getDate()}/${d.getMonth() + 1}/${d.getFullYear()} @ ${d.toLocaleTimeString()}`,
+        message: questions[i].question
+    })
+    newMessage.save()
+
     io.emit("serverResponse", message)
-    i = i + 1;
+    if(i > questions.length){
+        io.emit("serverResponse", "We will be in touch shortly")
+    }else{
+         i = i + 1; 
+    }
+        
 }
 
 module.exports = {askQuestion}

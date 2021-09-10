@@ -45,7 +45,7 @@ io.on("connection", (socket)=>{
         await newMessage.save((err, doc)=>{
             if(!err){
                 io.emit("addToChat", doc);
-                
+                console.log(message);
                 setTimeout(()=>{
                     askQuestion.askQuestion()
                 },2000)
