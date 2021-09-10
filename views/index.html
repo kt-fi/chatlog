@@ -9,6 +9,11 @@
     <script src="/socket.io/socket.io.js"></script>
 
     <script>
+
+(async ()=>{
+  await fetch("http://localhost:9090/chat/deleteAllMessages", {method: "DELETE", headers: {"Content-Type": "application/json"}, body: null})
+})()
+
         const socket = io();
 
 // FUNCTION FOR  CREATING AND FORMATTING NEW MESSAGE FOR CHAT
@@ -37,7 +42,6 @@ function addNewMessage(msg, user){
         newChatMessageMessage.setAttribute('class', 'chat-message__message');
         
         
-
         newChatDivContainer.appendChild(newMessageDiv);
         newChatMessageUname.appendChild(newMessageUname);
         newChatMessageDate.appendChild(newMessageDate);
@@ -47,13 +51,18 @@ function addNewMessage(msg, user){
         newMessageDiv.appendChild(newMessageDate);
         newMessageDiv.appendChild(newChatMessageMessage);
         
-
-        
         
         if(msg.message.answers){
           addAnswers(msg.message.answers)
           document.getElementById("message").hidden = true
           document.getElementById("btn-send").hidden = true
+        }else if(!msg.message.answers){
+          let container = document.getElementById("answers-list")
+  let child = document.getElementById("answers-box")
+  if(child){
+      container.removeChild(child)
+
+  }
         }
         
 
@@ -100,7 +109,8 @@ function sendMessageToServerButton(message){
   function sendMessageToServer(){
         let message = document.getElementById("message").value;
         socket.emit("msgClient", message)
-        
+        document.getElementById("message").value =""
+        document.getElementById("btn-send").disabled = true;
     }
 
     socket.on("addToChat", (msg)=>{
@@ -112,7 +122,14 @@ function sendMessageToServerButton(message){
         console.log(msg);
     })
 
+    socket.on("serverConnected", (msg)=>{
+        addNewMessage(msg, "server")
+        console.log(msg);
+    })
 
+function unBlockSend(){
+  document.getElementById("btn-send").disabled = false;
+}
     </script>
 
     <title>Chat Portal</title>
@@ -124,10 +141,10 @@ function sendMessageToServerButton(message){
         <ul></ul>
       </div>
     <div id="answers-list"></div>
-    <textarea name="" id="message" class="message" cols="65" rows="3" placeholder="Type msg here"></textarea><br>
+    <textarea name="" id="message" class="message" cols="65" rows="3" placeholder="Type msg here" onchange="unBlockSend()"></textarea><br>
       
     <div class="mb-3">
-      <button class="btn btn-success btn-send" id="btn-send" onclick="sendMessageToServer()">Send!</button>
+      <button class="btn btn-success btn-send" id="btn-send" onclick="sendMessageToServer()" disabled>Send!</button>
     </div>
      
    <a href="/chat/downloadChatHistory"><button class="btn btn-secondary" id="chat-download-btn">Download Chat!</button>  </a> 
