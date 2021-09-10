@@ -6,6 +6,8 @@ let mongoose = require("mongoose");
 let cors = require("cors");
 let io = require('socket.io')(http);
 
+let ChatMessage = require("./models/chatModel.js")
+
 //Middlewares
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended:true}));
@@ -31,7 +33,24 @@ app.get("/", (req, res)=>{
 // CONNECT to socket.io
 io.on("connection", (socket)=>{
     console.log("Connected Client")
+    let d = new Date()
+
+    socket.on("msgClient", async (message)=>{
+        let newMessage = await new ChatMessage({ 
+            dateTime: `${d.getDate()}/${d.getMonth() + 1}/${d.getFullYear()} @ ${d.toLocaleTimeString()}`,
+            message
+    })
+        await newMessage.save((err, doc)=>{
+            if(!err){
+                io.emit("addToChat", doc); 
+            
+            }else{
+            console.log({"msg":"This Message could not be sent, please try again!!"})
+        }
+    })
 })
+})
+
 
 
 

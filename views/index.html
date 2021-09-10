@@ -11,8 +11,12 @@
     <script>
         const socket = io();
 
+    function sendMessageToServer(){
+        let message = document.getElementById("message").value;
+        socket.emit("msgClient", message)
+    }
 
-        
+    socket.on("msgServer")
 
     </script>
 
@@ -28,7 +32,7 @@
     <textarea name="" id="message" class="message" cols="65" rows="3" placeholder="Type msg here"></textarea><br>
   
     <div class="mb-3">
-      <button class="btn btn-success btn-send" onclick="sendMsg()">Send!</button>
+      <button class="btn btn-success btn-send" onclick="sendMessageToServer()">Send!</button>
     </div>
      
    <a href="/chat/downloadChatHistory"><button class="btn btn-secondary" id="chat-download-btn">Download Chat!</button>  </a> 
