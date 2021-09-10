@@ -1,0 +1,98 @@
+body {
+    background-color: #22577A;
+}
+
+.container {
+    padding-top: 50px;
+    color: white;
+}
+
+.form-container {
+    width: 400px;
+    background-color: #1E3163;
+    color: white;
+    padding:25px;
+    border-radius: 5px;
+}
+
+@media screen and (max-width: 430px){
+    .form-container {
+        width: 95%;
+        padding: 2%;
+    }
+}
+
+.center-text {
+    text-align: center;
+}
+
+.header {
+    font-weight: 700;
+    font-size: 35px;
+    text-shadow: 3px 3px 2px  rgba(128, 128, 128, 0.637);
+}
+
+h3 {
+    color: gray;
+}
+
+.error-message{
+    color: red;
+}
+
+/*CHAT ROOM STYLES*/
+.chat-box {
+    border: 1px solid black;
+    background-color: white;
+     height: 450px; 
+     width:650px; 
+     overflow-x: hidden; 
+     overflow-y: scroll;
+     border-radius: 5px;
+     padding: 20px;
+     box-shadow: 1px 1px 1px 1px gray;
+     margin-bottom: 15px;
+     margin: 0 auto;
+}
+
+.message{
+    width: 650px;
+    margin: 10px;
+    border-radius: 5px;
+}
+
+.chat-message{
+    background-color: rgb(185, 208, 252);
+    padding: 10px;
+    border-radius: 5px;
+    text-align: left;
+   
+}
+
+.chat-message__uname{
+    font-size: 13px;
+    font-weight: 700;
+}
+
+.chat-message__date{
+    font-size: 12px;
+    font-weight: 400;
+}
+
+.chat-message__message{
+    font-size: 14px;
+}
+
+.btn-send{
+    width: 500px;
+    height: 50px;
+    
+}
+
+
+.footer {
+    text-align: center;
+    color: black;
+    font-size: 10px;
+    
+}
