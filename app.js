@@ -4,7 +4,7 @@ let http = require("http").Server(app);
 let bodyParser = require("body-parser");
 let mongoose = require("mongoose");
 let cors = require("cors");
-let socket = require('socket.io')(http);
+let io = require('socket.io')(http);
 
 //Middlewares
 app.use(bodyParser.json());
@@ -26,6 +26,12 @@ app.get("/", (req, res)=>{
     res.sendFile(__dirname + "/views/index.html")
 })
 
+
+
+// CONNECT to socket.io
+io.on("connection", (socket)=>{
+    console.log("Connected Client")
+})
 
 
 
