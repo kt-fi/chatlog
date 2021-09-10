@@ -39,7 +39,7 @@ let askQuestion = async () => {
     let signOffMessage = {
         uname: "Server",
         dateTime,
-        message: {question: `Thankyou for contacting us ${responses[0]} we will contact you at ${responses[4]} on ${responses[5]}, thankyou for your time!!`}
+        message: {question: `Thankyou for contacting us ${responses[0]} we will contact you at ${responses[5]} on ${responses[4]}, thankyou for your time!!`}
     }
 
     if(responses.length == 6){
