@@ -1,4 +1,5 @@
 let ChatMessage = require("./models/chatModel")
+
 let responses = []
 let questions = [
     {q: 0,
@@ -29,7 +30,7 @@ let askQuestion = async () => {
 
   console.log(responses)
     let d = new Date()
-    let dateTime = new Date();
+    let dateTime = `${d.getDate()}/${d.getMonth() + 1}/${d.getFullYear()} @ ${d.toLocaleTimeString()}`
     let message = {
         uname: "Server",
         dateTime,

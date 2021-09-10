@@ -58,7 +58,7 @@ io.on("connection", (socket)=>{
                 serverResponse.responses.push(message)
                 setTimeout(()=>{
                     serverResponse.askQuestion()
-                },2000)
+                },1500)
             }else{
             console.log({"msg":"This Message could not be sent, please try again!!"})
         }
