@@ -10,6 +10,7 @@
 
     <script>
 
+// CALL ROUTE ON SERVER TO DELETE DB OF MESSAGES TO START FRESH WITH NEW USER,  BY DOWNLOADING CHAT A PERMANANET DOCUMENT CAN BE KEPT AND SAVED
 (async ()=>{
   await fetch("http://localhost:9090/chat/deleteAllMessages", {method: "DELETE", headers: {"Content-Type": "application/json"}, body: null})
 })()
@@ -26,21 +27,15 @@ function addNewMessage(msg, user){
         let newChatMessageDate = document.createElement('p');
         let newChatMessageMessage = document.createElement('p');
 
-
-
         let newMessageUname = document.createTextNode(msg.uname);
         let newMessageDate = document.createTextNode(msg.dateTime);
-        // let newMessageMessage = document.createTextNode(msg.message);
         let newMessageMessage;
         user == "client" ? newMessageMessage = document.createTextNode(msg.message) : newMessageMessage = document.createTextNode(msg.message.question);
         
-        
-  
         newChatDivContainer.setAttribute('class', `${user == "client" ? 'chat-message-user mt-2' :'chat-message-server mt-2'}`);
         newChatMessageUname.setAttribute('class', 'chat-message__uname');
         newChatMessageDate.setAttribute('class', 'chat-message__date');
         newChatMessageMessage.setAttribute('class', 'chat-message__message');
-        
         
         newChatDivContainer.appendChild(newMessageDiv);
         newChatMessageUname.appendChild(newMessageUname);
@@ -51,25 +46,26 @@ function addNewMessage(msg, user){
         newMessageDiv.appendChild(newMessageDate);
         newMessageDiv.appendChild(newChatMessageMessage);
         
-        
+      // IF PRE DEFINED ANSWERS AVALIABLE HIDE CHAT TEXT INPUT OR REMOVE IF NOT
         if(msg.message.answers){
           addAnswers(msg.message.answers)
           document.getElementById("message").hidden = true
           document.getElementById("btn-send").hidden = true
         }else if(!msg.message.answers){
           let container = document.getElementById("answers-list")
-  let child = document.getElementById("answers-box")
-  if(child){
-      container.removeChild(child)
-  }
-
+          let child = document.getElementById("answers-box")
+        if(child){
+          container.removeChild(child)
         }
-        
+      }
 
+      //ADD NEW ELEMENTS TO THE CHAT BOX
         chatHistory.appendChild(newChatDivContainer); 
         document.getElementById("chat-history").scrollTo(0, 100000000);
 }
 
+
+// ADD BUTTON ELEMENTS FOR THE PRE DEFINED OPTIONS BUTTONS
 async function addAnswers(answers){
   console.log(answers);
   let container = document.getElementById("answers-list")
@@ -96,16 +92,14 @@ async function addAnswers(answers){
   chatAnswers.appendChild(answersDiv)
  
   });
-  
 }
 
+// SEND RESPONSES FROM PRE DEFINED BUTTON OPTIONS TO THE SERVER
 function sendMessageToServerButton(message){
-        
         socket.emit("msgClient", message)
-        
     }
 
-
+// SEND TYPED RESPONSES TO THE SERVER
   function sendMessageToServer(){
         let message = document.getElementById("message").value;
         socket.emit("msgClient", message)
@@ -113,27 +107,32 @@ function sendMessageToServerButton(message){
         document.getElementById("btn-send").disabled = true;
     }
 
+  // RECIEVE SOCKET WITH DATABASE OBJECT TO ADD FULL DETAIL TO CHAT INCLUDING DATE AND TIME OF MESSAGE
     socket.on("addToChat", (msg)=>{
       addNewMessage(msg, "client")
       })    
 
+  // RECIEVE SOCKET WITH OBJECT FOR MESSAGES CREATED BY SERVE TO ADD TO CHAT BOX FULL DETAIL TO CHAT INCLUDING DATE AND TIME OF MESSAGE
     socket.on("serverResponse", (msg)=>{
         addNewMessage(msg, "server")
         console.log(msg);
     })
 
+    // RECEIVE ORIGINAL START MESSAGE FROM SERVER UPON CONNECTION CREATED WHEN BY OPENING PAGE
     socket.on("serverConnected", (msg)=>{
         addNewMessage(msg, "server")
         console.log(msg);
     })
 
+    // RECEIVE THE FINAL PERSONALISED RESPONSE FROMS SERVER WITH APPOINTMENT TIME AND USER NAME
     socket.on("signoff", (msg)=>{
       addNewMessage(msg, "server")
     })
 
-function unBlockSend(){
-  document.getElementById("btn-send").disabled = false;
-}
+    // ENABLE SEND BUTTON WHEN TYPING RESPONSE
+    function unBlockSend(){
+      document.getElementById("btn-send").disabled = false;
+    }
     </script>
 
     <title>Chat Portal</title>
@@ -150,10 +149,8 @@ function unBlockSend(){
     <div class="mb-3">
       <button class="btn btn-success btn-send" id="btn-send" onclick="sendMessageToServer()" disabled>Send!</button>
     </div>
-     
-   <a href="/chat/downloadChatHistory"><button class="btn btn-secondary" id="chat-download-btn">Download Chat!</button>  </a> 
+     <!-- LINK FOR FETCHING ROUTE AND DOWNLOAD CHAT HISTORY -->
+      <a href="/chat/downloadChatHistory"><button class="btn btn-secondary" id="chat-download-btn">Download Chat!</button>  </a> 
     </div>
-
-
 </body>
 </html>

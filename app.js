@@ -7,8 +7,8 @@ let cors = require("cors");
 global.io = require('socket.io')(http);
 
 let chatRouter = require("./routers/chatRouter");
-
 let serverResponse = require("./serverResponse")
+
 let ChatMessage = require("./models/chatModel.js")
 
 //Middlewares
@@ -21,7 +21,7 @@ app.use(express.static(__dirname + "/public"))
 // Set Up and connect to Database
 let dbUrl = "mongodb://localhost:27017/chatDev"
 
-mongoose.connect(dbUrl, ()=>{
+mongoose.connect(dbUrl, {useUnifiedTopology: true, useNewUrlParser: true}, ()=>{
     console.log("Mongo db connected");
 })
 
@@ -34,9 +34,8 @@ app.get("/", (req, res)=>{
 app.use("/chat", chatRouter)
 
 
-let responses = []
 
-// CONNECT to socket.io
+// CONNECT to socket.io, On newMessage.save() starts a loop for the conversation
 io.on("connection", (socket)=>{
     let d = new Date()
     let message = {
@@ -76,4 +75,3 @@ http.listen(9090, ()=>{
 })
 
 
-module.exports = responses;

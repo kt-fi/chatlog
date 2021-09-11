@@ -1,6 +1,9 @@
 let ChatMessage = require("./models/chatModel")
 
+// Array to collect responses for personalised final message
 let responses = []
+
+//preset server replies
 let questions = [
     {q: 0,
     question: "Hi How Are You?"},
@@ -24,11 +27,10 @@ let questions = [
 
 let i = 0;
 let length = questions.length;
+
+//provide the responses to the app.js
 let askQuestion = async () => {
 
-   
-
-  console.log(responses)
     let d = new Date()
     let dateTime = `${d.getDate()}/${d.getMonth() + 1}/${d.getFullYear()} @ ${d.toLocaleTimeString()}`
     let message = {
@@ -42,11 +44,10 @@ let askQuestion = async () => {
         dateTime,
         message: {question: `Thankyou for contacting us ${responses[0]} we will contact you at ${responses[5]} on ${responses[4]}, thankyou for your time!!`}
     }
-
+    
     if(responses.length == 6){
         io.emit("signoff", signOffMessage)
     }
-
    let newMessage = await new ChatMessage({
         uname: "Server",
         dateTime,
@@ -56,13 +57,7 @@ let askQuestion = async () => {
 
     io.emit("serverResponse", message)
         
-    if(i > length - 2){
-       let message = {question: `Thankyou for contacting us ${responses[0]} we will contact you at ${responses[4]} on ${responses[5]}, thankyou for your time!!`}
-        io.emit("serverResponse", message)
-    }else{
-         i = i + 1; 
-    }
-        
+    i = i + 1;  
 }
 
 module.exports = {askQuestion, responses}

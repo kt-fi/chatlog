@@ -1,24 +1,4 @@
-Date/Time: 10/9/2021 @ 11:40:32, UserName: You, Message: Chris 
+Date/Time: 11/9/2021 @ 02:57:52, UserName: You, Message: fsdfsa 
  
-,Date/Time: 10/9/2021 @ 11:40:57, UserName: Server, Message: Hi How Are You? 
- 
-,Date/Time: 10/9/2021 @ 11:40:32, UserName: You, Message: Im Great 
- 
-,Date/Time: 10/9/2021 @ 11:41:15, UserName: Server, Message: What is your email Address? 
- 
-,Date/Time: 10/9/2021 @ 11:40:32, UserName: You, Message: hello@g.com 
- 
-,Date/Time: 10/9/2021 @ 11:41:24, UserName: Server, Message: What would you like to talk about? 
- 
-,Date/Time: 10/9/2021 @ 11:40:32, UserName: You, Message: Our Products 
- 
-,Date/Time: 10/9/2021 @ 11:41:32, UserName: Server, Message: When is a good day to contact you? 
- 
-,Date/Time: 10/9/2021 @ 11:40:32, UserName: You, Message: Wednesday 
- 
-,Date/Time: 10/9/2021 @ 11:41:38, UserName: Server, Message: What time should we message you? 
- 
-,Date/Time: 10/9/2021 @ 11:40:32, UserName: You, Message: 2pm-6pm 
- 
-,Date/Time: 10/9/2021 @ 11:41:41, UserName: Server, Message: Thankyou for contacting us we will be in touch shortly!! 
+,Date/Time: 11/9/2021 @ 02:57:57, UserName: Server, Message: Hi How Are You? 
  
